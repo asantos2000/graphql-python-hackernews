@@ -1,0 +1,199 @@
+mutation CreateLink1 {
+  createLink (
+    url: "http://localhost"
+    description: "Home sweet home"
+  ){
+    id
+  }
+}
+
+mutation CreateUser {
+	createUser (
+    username: "anderson"
+    password: "2002"
+    email: "anderson@email.com"
+  ) {
+    user {
+      id
+      username
+      email
+    }
+  }
+}
+
+query Users {
+  users {
+    id
+    email
+    username
+    isActive
+    isStaff
+    dateJoined
+  }
+}
+
+mutation Auth{
+  tokenAuth(
+    username: "maria"
+    password: "2002"
+  ) {
+    token
+  }
+}
+
+query Me {
+	me {
+		id
+		username
+		email
+	}
+}
+
+mutation CreateLink {
+  createLink (
+    url: "http://yahoo.com"
+    description: "Old times"
+  ){
+    id
+		postedBy {
+			username
+		}
+  }
+}
+
+mutation CreateVote {
+	createVote(linkId: 10) {
+		user {
+			id
+			username
+			email
+		}
+		link {
+			id
+			description
+			url
+		}
+	}
+}
+
+query AllLinks {
+  links {
+    id
+    description
+    url
+		postedBy {
+			username
+			email
+		}
+  }
+}
+
+query SearchLink {
+	links(search: "http") {
+		id
+		url
+		description
+		postedBy {
+			username
+		}
+	}
+}
+
+query Pag0Link {
+	links(first: 5, skip: 0) {
+		id
+		url
+		description
+		postedBy {
+			username
+		}
+	}
+}
+
+query Pag1Link {
+	links(first: 5, skip: 5) {
+		id
+		url
+		description
+		postedBy {
+			username
+		}
+	}
+}
+
+
+query AllVotes {
+	votes {
+		id
+		user {
+			username
+			email
+		}
+		link {
+			url
+			description
+			postedBy {
+				username
+				email
+			}
+		}
+	}
+}
+
+query RelayLinks {
+	relayLinks {
+		edges {
+			node {
+				id
+				url
+				description
+				votes {
+					edges {
+						node {
+							id
+							user {
+								id
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+query RelayLinksFiltedPag1 {
+	relayLinks(first: 5, after: "") {
+		edges {
+			node {
+				id
+				url
+				description
+			}
+		}
+		pageInfo {
+			startCursor
+			endCursor
+			hasNextPage
+			hasPreviousPage
+		}
+	}
+}
+
+query RelayLinksFiltedPag2 {
+	relayLinks(first: 5, after: "YXJyYXljb25uZWN0aW9uOjQ=") {
+		edges {
+			node {
+				id
+				url
+				description
+			}
+		}
+		pageInfo {
+			startCursor
+			endCursor
+			hasNextPage
+			hasPreviousPage
+		}
+	}
+}
